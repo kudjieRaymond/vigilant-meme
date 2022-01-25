@@ -5,7 +5,7 @@ if DATABASE_URI.startswith("postgres://") :
     DATABASE_URI = DATABASE_URI.replace("postgres://", "postgresql://", 1)
 
 
-class Config(Object):
+class Config(object):
     DEBUG =False
     TESTING = False
     CSRF_ENABLE = True
@@ -26,7 +26,7 @@ class StagingConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG=True
-    DEVELOPMENT= True
+    DEVELOPMENT=True
 
 
 class TestingConfig(Config):

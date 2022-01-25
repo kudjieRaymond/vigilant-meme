@@ -1,3 +1,4 @@
+from crypt import methods
 from random import choice
 import string
 from datetime import datetime
@@ -15,7 +16,7 @@ def generate_short_id(num_of_chars:int):
     return  ''.join(generated_chars)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == 'POST':
         url = request.form['url']
@@ -41,3 +42,14 @@ def index():
         return render_template('index.html', short_url=short_url)
 
     return render_template('index.html')
+
+
+@app.route('/<short_id>')
+def redirect_url(short_id):
+    link = ShortUrls.query.filter_by(short_id = short_id).first()
+
+    if link is None:
+        flash('Invalid Url')
+        return redirect(url_for('index'))
+
+    return redirect(link.original_url)
