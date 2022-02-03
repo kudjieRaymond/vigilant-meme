@@ -10,17 +10,19 @@ def generate_short_id(num_of_chars:int):
     """
     Function to generate short id of specified length of characters
     """
-
+    
     generated_chars = [ choice(string.ascii_letters+string.digits) for _ in range(num_of_chars)]
-
     return  ''.join(generated_chars)
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == 'POST':
+        
         url = request.form['url']
         short_id = request.form['custom_id']
+        
+        print(url)
 
         if short_id and ShortUrls.query.filter_by(short_id=short_id).first() is not None:
             flash("Please enter a different custom id")
@@ -38,6 +40,8 @@ def index():
         db.session.commit()
 
         short_url = request.host_url + short_id
+
+        print(short_url)
 
         return render_template('index.html', short_url=short_url)
 
